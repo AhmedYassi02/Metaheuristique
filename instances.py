@@ -9,21 +9,22 @@ def read_instance(inst, nb_projets, nb_sacs, opt_value):
     }
 
 
-# read text file
-file_name = "instances\mknapcb1.txt"
-with open(file_name, 'r') as file:
-    content = file.read()
-    data = content.split()
-    nb_instances = data[0]
-    instances_brut = data[1:]
-    instances = []
-    for i in range(int(nb_instances)):
-        print(f"reading instance {i+1}")
-        nb_projects = int(instances_brut[0])
-        nb_sacs = int(instances_brut[1])
-        opt_value = float(instances_brut[2])
-        inst = instances_brut[:nb_projects + nb_sacs + nb_projects*nb_sacs]
-        instances.append(read_instance(
-            inst, nb_projects, nb_sacs, opt_value))
-        instances_brut = instances_brut[3 +
-                                        nb_projects + nb_sacs + nb_projects*nb_sacs:]
+def get_instances(file_path):
+    with open(file_path, 'r') as file:
+        content = file.read()
+        data = content.split()
+        nb_instances = data[0]
+        instances_brut = data[1:]
+        instances = []
+        for i in range(int(nb_instances)):
+            print(f"reading instance {i+1} from {file_path}")
+            nb_projects = int(instances_brut[0])
+            nb_sacs = int(instances_brut[1])
+            opt_value = float(instances_brut[2])
+            inst = instances_brut[:3+nb_projects +
+                                  nb_sacs + nb_projects*nb_sacs]
+            instances.append(read_instance(
+                inst, nb_projects, nb_sacs, opt_value))
+            instances_brut = instances_brut[3 +
+                                            nb_projects + nb_sacs + nb_projects*nb_sacs:]
+    return instances
