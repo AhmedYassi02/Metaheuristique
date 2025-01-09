@@ -17,7 +17,6 @@ def get_instances(file_path):
         instances_brut = data[1:]
         instances = []
         for i in range(int(nb_instances)):
-            print(f"reading instance {i+1} from {file_path}")
             nb_projects = int(instances_brut[0])
             nb_sacs = int(instances_brut[1])
             opt_value = float(instances_brut[2])
