@@ -6,18 +6,6 @@ from instances import get_instances
 def gen_voisin_perm(N, M, a, b, c, x, max_iter=100):
     """ Génère une solution voisine, par séléction et permutation d'un projet sélectionné et 
     d'un autre non séléctionné, pour le problème du sac à dos multidimensionnel.
-
-    Paramètres: 
-    N : Nombre de projets
-    M : Nombre de ressources
-    c : Liste des gains associés aux projets.
-    a : Matrice (M x N) des consommations de ressources.
-    b : Liste des quantités disponibles de chaque ressource.
-    x : Solution initiale (vecteur binaire).
-    max_iter : Nombre maximal d'itération pour trouver un voisin valide.
-
-    Retourne :
-    x_vois : Solution voisine.
     """
 
     selec = [i for i, xi in enumerate(x) if xi == 1] # Tableau des indices des projets selectionnés dans la solution x
@@ -43,6 +31,7 @@ def gen_voisin_perm(N, M, a, b, c, x, max_iter=100):
             return x_vois
     
     return x
+
 
 
 file_name = "instances/mknap1.txt"
