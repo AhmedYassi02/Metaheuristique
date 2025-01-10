@@ -81,7 +81,8 @@ def genetic_algo(N, M, c, a, b, max_iter=100, pop_size=100):
 
         worst_idx = values.index(min(values))
         population[worst_idx] = x_mut
-        print("Nouvelle solution trouvée :", best_value)
+        print(
+            f"Nouvelle solution trouvée :{best_value} : {is_feasible(x_best, a, b)}")
 
     return x_best, best_value
 
@@ -89,7 +90,7 @@ def genetic_algo(N, M, c, a, b, max_iter=100, pop_size=100):
 file_name = "instances/mknap1.txt"
 
 instances = get_instances(file_name)
-inst = instances[4]
+inst = instances[6]
 
 c = inst["gains"]
 a = np.array(inst["ressources"])
@@ -100,4 +101,6 @@ M = len(b)
 print("BEST VALUE :", inst["opt_value"])
 
 x_best, best_value = genetic_algo(N, M, c, a, b, max_iter=100, pop_size=100)
+print(f"gap :  {( inst['opt_value']-best_value)/inst['opt_value']*100}%")
+
 print(is_feasible(x_best, a, b))
