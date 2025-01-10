@@ -1,21 +1,12 @@
 import numpy as np
 from instances import get_instances
 from greedy import greedy_knapsack
+from structure_de_voisinage import get_hamming_neighbors
 
 
 def is_feasible(x, a, b):
     """Vérifie si une solution est faisable."""
     return np.all(np.dot(a, x) <= b)
-
-
-def get_hamming_neighbors(x):
-    """Génère tous les voisins à une distance de Hamming = 1."""
-    neighbors = []
-    for i in range(len(x)):
-        neighbor = x.copy()
-        neighbor[i] = 1 - neighbor[i]  # Inverse le bit
-        neighbors.append(neighbor)
-    return neighbors
 
 
 def local_search_knapsack(c, a, b, x_init):
@@ -43,7 +34,6 @@ def local_search_knapsack(c, a, b, x_init):
         for x_neighbor in neighbors:
             if is_feasible(x_neighbor, a, b):
                 neighbor_value = np.dot(c, x_neighbor)
-
                 if neighbor_value > best_value:
                     print("Nouvelle solution trouvée :", neighbor_value)
                     x_best = x_neighbor

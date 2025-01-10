@@ -54,17 +54,17 @@ def reparation(N, M, a, b, c, x):
     return x, gain
 
 
-file_name = "instances/mknap1.txt"
-instances = get_instances(file_name)
-inst = instances[0]
-print(inst)
-N = int(inst["nb_projets"])
-M = int(inst["nb_sacs"])
-c = inst["gains"]
-a = np.array(inst["ressources"])
-b = inst["quantite_ressources"]
-x = gen_sol_initiale(N)
-x, gain = reparation(N, M, a, b, c, x)
-print(f"Solution : {x}")
-print(f"Valeur de la solution : {gain}")
-print(f"Valeur optimale : {inst['opt_value']}")
+# file_name = "instances/mknap1.txt"
+# instances = get_instances(file_name)
+# inst = instances[0]
+# print(inst)
+# N = int(inst["nb_projets"])
+# M = int(inst["nb_sacs"])
+# c = inst["gains"]
+# a = np.array(inst["ressources"])
+# b = inst["quantite_ressources"]
+# x = gen_sol_initiale(N)
+# x, gain = reparation(N, M, a, b, c, x)
+# print(f"Solution : {x}")
+# print(f"Valeur de la solution : {gain}")
+# print(f"Valeur optimale : {inst['opt_value']}")
