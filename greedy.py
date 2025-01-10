@@ -3,30 +3,18 @@ from instances import get_instances
 
 
 def greedy_knapsack(c, a, b):
-    """ Heuristique gloutonne pour le problème du sac à dos multidimensionnel.
 
-    Paramètres :
-    c : Liste des gains associés aux projets.
-    a : Matrice (M x N) des consommations de ressources.
-    b : Liste des quantités disponibles de chaque ressource.
+    N = len(c)
+    M = len(b)
 
-    Retourne :
-    x : Solution binaire (0 ou 1) indiquant les projets sélectionnés.
-    """
+    ratios = np.array(c) / (np.sum(a, axis=0) + 1e-6)
+    indices = np.argsort(-ratios)
 
-    N = len(c)  # Nombre de projets
-    M = len(b)  # Nombre de ressources
-
-    # Étape 1 : Calculer les ratios et trier les projets
-    ratios = np.array(c) / (np.sum(a, axis=0) + 1e-6)  # Gain par coût total
-    indices = np.argsort(-ratios)  # Trier par ratios décroissants
-
-    # Étape 2 : Construction de la solution
     x = np.zeros(N, dtype=int)
-    resource_usage = np.zeros(M)  # Suivi des ressources utilisées
+    resource_usage = np.zeros(M)
 
     for j in indices:
-        if np.all(resource_usage + a[:, j] <= b):  # Vérifier les contraintes
+        if np.all(resource_usage + a[:, j] <= b):
             x[j] = 1
             resource_usage += a[:, j]
     value_solution = np.sum(c * x)
