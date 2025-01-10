@@ -29,7 +29,7 @@ def gen_voisin_perm(N, M, a, b, c, x, max_iter=100):
         x_vois[p_non_selec] = 1
 
         # Calcul de ressouces consommées r[i] pour chaque ressource i
-        r = [sum(a[i][j] * x[j] for j in range(N)) for i in range(M)]
+        r = [sum(a[i][j] * x_vois[j] for j in range(N)) for i in range(M)]
 
         # Vérification des contraintes
         if all(r[i] <= b[i] for i in range(M)):
