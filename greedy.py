@@ -3,6 +3,16 @@ from instances import get_instances
 
 
 def greedy_knapsack(c, a, b):
+    """ Heuristique gloutonne pour le problème du sac à dos multidimensionnel.
+
+    Paramètres :
+    c : Liste des gains associés aux projets.
+    a : Matrice (M x N) des consommations de ressources.
+    b : Liste des quantités disponibles de chaque ressource.
+
+    Retourne :
+    x : Solution binaire (0 ou 1) indiquant les projets sélectionnés.
+    """
 
     N = len(c)
     M = len(b)
