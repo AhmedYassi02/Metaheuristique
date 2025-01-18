@@ -2,7 +2,7 @@ import random
 from instances import get_instances
 import numpy as np
 from heuristique_de_reparation import reparation, gen_sol_initiale
-from structure_de_voisinage import gen_voisin_perm
+from structure_de_voisinage import gen_voisin_perm, hamming_1, hamming_2
 
 random.seed(2)  # inst1_5
 
@@ -20,7 +20,26 @@ def gen_random_sols(N, M, a, b, c, n_sols):
         sols.append(x)
 
     return sols
+def gen_feasible_sols(N, M, a, b, c, n_sols):
+    first_rd_sol = gen_sol_initiale(N)
+    feasible_sol, _ = reparation(N, M, a, b, c, first_rd_sol)
+    
+    # generate n_sols feasible solutions by using hamming 1
+    sols = [feasible_sol]
+    iters = 0
+    while iters < n_sols:
+        x = feasible_sol.copy()
+        x = hamming_1(x)
+        # if soltion is feasible add it to the list
+        for x_vois in x:
+            if is_feasible(x_vois, a, b):
+                sols.append(x_vois)
+                iters += 1
+                if iters == n_sols:
+                    break
+    return sols
 
+    
 
 def is_feasible(x, a, b):
     """Vérifie si une solution est faisable."""
@@ -82,7 +101,7 @@ def genetic_algo(N, M, c, a, b, max_iter=100, pop_size=100):
 
     N = len(c)
     M = len(b)
-    population = gen_random_sols(N, M, a, b, c, pop_size)
+    population = gen_feasible_sols(N, M, a, b, c, pop_size)
     best_value = 0
     x_best = population[0]
 
