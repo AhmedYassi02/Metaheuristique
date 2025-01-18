@@ -3,11 +3,16 @@ from instances import get_instances
 import numpy as np
 from heuristique_de_reparation import reparation, gen_sol_initiale
 from structure_de_voisinage import gen_voisin_perm, hamming_1, hamming_2
+from tqdm import tqdm
+import pandas as pd
 
 random.seed(2)  # inst1_5
 
 
 def gen_random_sols(N, M, a, b, c, n_sols):
+    """Fonction qui génère n_sols solutions aléatoires pour le problème.
+    On génère une solution initiale aléatoire, on la répare et on génère n_sols-1 solutions en explorant les voisins en utilsant la permutaion.
+    """
     first_rd_sol = gen_sol_initiale(N)
     feasible_sol, _ = reparation(N, M, a, b, c, first_rd_sol)
 
@@ -21,10 +26,11 @@ def gen_random_sols(N, M, a, b, c, n_sols):
 
     return sols
 def gen_feasible_sols(N, M, a, b, c, n_sols):
+    """Fonction qui génère n_sols solutions aléatoires pour le problème. On génère une solution initiale aléatoire, on la répare et on génère n_sols-1 solutions en explorant les voisins avec la methode de la distance de Hamming.
+    """
     first_rd_sol = gen_sol_initiale(N)
     feasible_sol, _ = reparation(N, M, a, b, c, first_rd_sol)
     
-    # generate n_sols feasible solutions by using hamming 1
     sols = [feasible_sol]
     iters = 0
     while iters < n_sols:
@@ -47,6 +53,7 @@ def is_feasible(x, a, b):
 
 
 def mutate_solution(N, M, a, b, c, x):
+    
     x_mut = x.copy()
     i = random.randint(0, len(x)-1)
     x_mut[i] = 1 - x_mut[i]
@@ -98,7 +105,8 @@ def genetic_algo(N, M, c, a, b, max_iter=100, pop_size=100):
     x_best : Meilleure solution trouvée.
     best_value : Gain total associé à la meilleure solution.
     """
-
+    # ajouter critère d'arrêt
+    time = 0
     N = len(c)
     M = len(b)
     population = gen_feasible_sols(N, M, a, b, c, pop_size)
@@ -131,30 +139,39 @@ def genetic_algo(N, M, c, a, b, max_iter=100, pop_size=100):
     return x_best, best_value
 
 
-# file_name = "instances/mknap1.txt"
-
-# instances = get_instances(file_name)
-# idx = 6
-# inst = instances[idx]
-
-# c = inst["gains"]
-# a = np.array(inst["ressources"])
-# b = inst["quantite_ressources"]
-# N = len(c)
-# M = len(b)
-
-# print("BEST VALUE :", inst["opt_value"])
-
-# x_best, best_value = genetic_algo(N, M, c, a, b, max_iter=200, pop_size=100)
-# print(f"gap :  {( inst['opt_value']-best_value)/inst['opt_value']*100}%")
-
-# # save solution to solutions/filename_sol.txt
-# with open(f"solutions/{file_name.split('/')[-1].split('.')[0]}_sol{idx}.txt", 'w') as file:
-#     file.write(f"{best_value}\n")
-#     file.write(" ".join(map(str, x_best)))
-#     file.write("\n")
-#     file.write(
-#         f"gap :  {( inst['opt_value']-best_value)/inst['opt_value']*100}%")
-
-
-# print(is_feasible(x_best, a, b))
+# files = ['instances/mknap1']
+# df = pd.DataFrame(columns=['file','instance', 'opt_value','value_genetic', 'gap_genetic'])
+# with tqdm(total=len(files), desc="Traitement des fichiers", unit="fichier") as overall_progress:
+#     for file in files : 
+#         inst_file = file + '.txt'
+        
+#         instances = get_instances(inst_file)
+#         with tqdm(total=len(instances), desc=f"Traitement de {file}", leave=True, unit="instance") as file_progress:
+#             for i in range(len(instances)):
+#                 ins = instances[i]
+                
+#                 c = ins["gains"]
+#                 a = np.array(ins["ressources"])
+#                 b = ins["quantite_ressources"]
+#                 N = len(c)
+#                 M = len(b)
+#                 x_best, best_value = genetic_algo(N, M, c, a, b, max_iter=200, pop_size=100)
+#                 infos = infos = {
+#                     'file': [file.split('/')[-1]],
+#                     'instance': [i],
+#                     'opt_value': [float(ins["opt_value"])],
+#                     'value_genetic': [best_value],
+#                     'gap_genetic': [(float(ins["opt_value"] - best_value)) / float(ins["opt_value"])],
+#                 }
+#                 df = pd.concat([df, pd.DataFrame(infos)])
+#                 file_progress.update(1)
+#         overall_progress.update(1)
+        
+# file = 'mknap1'
+# caption = "{"+ f"Résultats pour l'instance {file}" + "}"
+# print( "\\begin{table}[]\n\centering")
+# print(df.query("file == @file").to_latex(index=False, formatters={"name": str.upper},
+#                   float_format="{:.3f}".format,))
+# print(f"\caption{caption}")
+# print("\label{tab:my_label}")
+# print("\end{table}")       
