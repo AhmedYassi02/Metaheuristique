@@ -69,7 +69,6 @@ def reparation_surrogate(N, M, a, b, c, methode='simple'):
     x : Solution binaire (0 ou 1) indiquant les projets sélectionnés.
     gain : Gain totale de la solution x réparée
     """
-    
     if methode == 'simple':
         u = [1 for _ in range(M)]
     elif methode == 'inverse':

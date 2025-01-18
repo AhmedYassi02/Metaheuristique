@@ -37,11 +37,11 @@ def gen_voisin_perm(N, M, a, b, c, x, max_iter=100):
 
     return x
 
-def hamming_2(N, x):
+def hamming_2(x):
     """Génère tous les voisins à une distance de Hamming = 2."""
 
     voisins = []
-    for i, j in combinations(range(N), 2):
+    for i, j in combinations(range(len(x)), 2):
         x_vois = x[:]
         x_vois[i] = 1 - x_vois[i]  # Inverse le 1er bit
         x_vois[j] = 1 - x_vois[j]  # Inverse le 2eme bit
@@ -49,7 +49,7 @@ def hamming_2(N, x):
     return voisins
 
 
-def get_hamming_neighbors(x):
+def hamming_1(x):
     """Génère tous les voisins à une distance de Hamming = 1."""
     neighbors = []
     for i in range(len(x)):
@@ -60,23 +60,23 @@ def get_hamming_neighbors(x):
 
 
 
-file_name = "instances/mknap1.txt"
+#file_name = "instances/mknap1.txt"
 
-instances = get_instances(file_name)
-inst = instances[0]
-
-
-N = int(inst["nb_projets"])
-M = int(inst["nb_sacs"])
-c = inst["gains"]
-a = np.array(inst["ressources"])
-b = inst["quantite_ressources"]
+#instances = get_instances(file_name)
+#inst = instances[0]
 
 
-x_sur2, gain_sur2 = reparation_surrogate(N, M, a, b, c, methode='inverse')
-print(x_sur2)
+#N = int(inst["nb_projets"])
+#M = int(inst["nb_sacs"])
+#c = inst["gains"]
+#a = np.array(inst["ressources"])
+#b = inst["quantite_ressources"]
 
-x_vois = get_hamming_neighbors(x_sur2)
-print(x_vois)
 
-print(hamming_2(N, x_sur2))
+#x_sur2, gain_sur2 = reparation_surrogate(N, M, a, b, c, methode='inverse')
+#print(x_sur2)
+
+#x_vois = get_hamming_neighbors(x_sur2)
+#print(x_vois)
+
+#print(hamming_2(x_sur2))
