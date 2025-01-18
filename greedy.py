@@ -32,16 +32,6 @@ def greedy_knapsack(c, a, b):
     return x, value_solution
 
 
-# file_name = "instances/mknap1.txt"
-
-# instances = get_instances(file_name)
-# inst = instances[6]
-
-# c = inst["gains"]
-# a = np.array(inst["ressources"])
-# b = inst["quantite_ressources"]
-
-
 # x, value_solution = greedy_knapsack(c, a, b)
 # print(f"Solution : {x}")
 # print(f"Valeur de la solution : {value_solution}")
