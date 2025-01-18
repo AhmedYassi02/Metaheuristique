@@ -37,41 +37,25 @@ def gen_voisin_perm(N, M, a, b, c, x, max_iter=100):
 
     return x
 
-def gen_voisin_k_perm(N, M, a, b, c, x, k):
-    """
-    Génère les voisins faisables de la solution courante en faisant des k permutations.
-    """
+def hamming_2(N, x):
+    """Génère tous les voisins à une distance de Hamming = 2."""
+
     voisins = []
-
-    # Tableau des indices des projets selectionnés dans la solution x
-    selec = [i for i, xi in enumerate(x) if xi == 1]
-    # Tableau des indices des projets non selectionnés dans la solution x
-    non_selec = [i for i, xi in enumerate(x) if xi == 0]
-
-    # Génération des combinaisons possibles de k objets à supprimer et à ajouter
-    for sup in combinations(selec, k):
-        for ajout in combinations(non_selec, k):
-            x_vois = x[:]
-            for su in sup:
-                x_vois[su] = 0
-            for aj in ajout:
-                x_vois[aj] = 1
-
-            if faisable(N, M, a, b, x_vois):
-                voisins.append(x_vois)
-
+    for i, j in combinations(range(N), 2):
+        x_vois = x[:]
+        x_vois[i] = 1 - x_vois[i]  # Inverse le 1er bit
+        x_vois[j] = 1 - x_vois[j]  # Inverse le 2eme bit
+        voisins.append(x_vois)
     return voisins
 
 
-def get_hamming_neighbors(N, M, a, b, x):
+def get_hamming_neighbors(x):
     """Génère tous les voisins à une distance de Hamming = 1."""
     neighbors = []
     for i in range(len(x)):
         neighbor = x.copy()
         neighbor[i] = 1 - neighbor[i]  # Inverse le bit
-
-        if faisable(N, M, a, b, neighbor):
-            neighbors.append(neighbor)
+        neighbors.append(neighbor)
     return neighbors
 
 
@@ -92,8 +76,7 @@ b = inst["quantite_ressources"]
 x_sur2, gain_sur2 = reparation_surrogate(N, M, a, b, c, methode='inverse')
 print(x_sur2)
 
-x_vois = gen_voisin_k_perm(N, M, a, b, c, x_sur2, 2)
+x_vois = get_hamming_neighbors(x_sur2)
 print(x_vois)
 
-x_vois = get_hamming_neighbors(N, M, a, b, x_sur2)
-print(x_vois)
+print(hamming_2(N, x_sur2))
